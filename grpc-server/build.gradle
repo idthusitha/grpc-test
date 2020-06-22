@@ -1,0 +1,86 @@
+buildscript {
+
+    repositories {
+        maven {
+            url readonlyRepoURL
+        }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.2.RELEASE")
+        classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.5")          
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+
+
+group = projectGroup
+version = projectVersion
+sourceCompatibility = sourceCompatibility
+
+repositories {
+    maven {
+        url readonlyRepoURL
+    }
+}
+
+project.ext {
+    generatedFilesBaseDir = 'src/generated'
+}
+
+
+dependencies {
+    compile ("io.grpc:grpc-netty:1.16.1")
+    compile ("io.grpc:grpc-protobuf:1.16.1")
+    compile ("io.grpc:grpc-stub:1.16.1")
+    compile ("com.google.protobuf:protobuf-java-util:3.5.1")
+    compile ("com.google.api.grpc:proto-google-common-protos:1.12.0")  
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir "${projectDir}/proto"
+            include "**/*.proto"
+        }
+    }
+}
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.3.0"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.4.0"
+        }
+    }
+
+    generateProtoTasks.generatedFilesBaseDir = "${buildDir}/generated-protoc/"
+
+    generateProtoTasks {
+
+        all().each { task ->
+            task.plugins {
+                grpc {
+                }
+            }
+        }
+    }
+}
+
+
+clean {
+    delete generatedFilesBaseDir
+}
+
+build {
+    delete generatedFilesBaseDir
+}
