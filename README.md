@@ -31,6 +31,18 @@ Select the proto file
 	http://localhost:9090
 
 
+### GRPC envoy Proxy service
+	cd {{WORKSPACE}}/grpc-test/grpc-envoy-proxy
+	gradle clean build
+	sudo docker image rm --force grpctest/grpc-envoy-proxy
+	sudo docker build -t  grpctest/grpc-envoy-proxy .
+	sudo docker-compose up	
+	
+	
+	http://localhost:51051/grpcserver.RequestDemo/details?reqParam1=aaaaaaaaaaaa&reqParam2= qqqqqqqqqqqqqq
+	
+	https://blog.jdriven.com/2018/11/transcoding-grpc-to-http-json-using-envoy/
+
 
 
 ### REST request

@@ -1,0 +1,11 @@
+version: '3'
+
+services:    
+  envoy_proxy:
+    image: grpctest/grpc-envoy-proxy
+    ports:
+      - "51051:51051"
+    environment:
+      - "GRPC_HOST=127.0.0.1"
+      - "GRPC_PORT=9090"
+    network_mode: host

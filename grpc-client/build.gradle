@@ -21,7 +21,7 @@ dependencies {
 	}
 	
 	compile fileTree(dir:'lib',include:['*.jar'])
-	//compile files('/system/workspace/grpc-test/grpc-server/build/libs/grpc-test-0.0.73.jar')
+	//compile files('/system/workspace/grpc-test/grpc-server/build/libs/grpc-server-1.0.0')
 	
 	compile ("io.grpc:grpc-netty:1.16.1")
 	

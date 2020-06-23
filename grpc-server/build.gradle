@@ -1,9 +1,7 @@
 buildscript {
 
     repositories {
-        maven {
-            url readonlyRepoURL
-        }
+        mavenCentral()
     }
 
     dependencies {
@@ -19,14 +17,12 @@ apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
 
-group = projectGroup
-version = projectVersion
+group = 'grpc-server'
+version = '1.0.0'
 sourceCompatibility = sourceCompatibility
 
 repositories {
-    maven {
-        url readonlyRepoURL
-    }
+   mavenCentral()
 }
 
 project.ext {
