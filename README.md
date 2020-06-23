@@ -9,6 +9,10 @@ More Info: https://grpc.io/
 	git clone https://github.com/idthusitha/grpc-test.git
 	cd {{WORKSPACE}}/grpc-test/grpc-client
 	gradle clean build bootRun
+	
+	gradle clean build bootRun --debug-jvm
+	Listening for transport dt_socket at address: 5005
+	
 
 
 ### GRPC client install

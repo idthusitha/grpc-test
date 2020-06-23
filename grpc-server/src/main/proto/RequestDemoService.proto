@@ -1,0 +1,24 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.grpcserver.grpc";
+
+import "google/api/annotations.proto";
+
+message DemoRequest {
+    string reqParam1 = 1;
+    string reqParam2 = 2;
+}
+
+message DemoResponse {
+    string resParam1 = 1;
+    string resParam2 = 2;
+}
+
+service RequestDemoService {
+	rpc getRequestDetails (DemoRequest) returns (DemoResponse) {
+        option (google.api.http) = {
+            post: "/grpcserver.RequestDemo/details"
+            body: "*"
+        };
+    };    
+}

@@ -1,5 +1,7 @@
 package com.grpc.grpcclient.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +26,10 @@ public class GRPCController {
 	@RequestMapping("/hello")
 	public String hello() {
 		return grpcClientService.helloo();
+	}
+	
+	@RequestMapping("/getRequestDetails")
+	public String getRequestDetails(HttpServletRequest request) {
+		return grpcClientService.getRequestDetails(request);
 	}
 }
