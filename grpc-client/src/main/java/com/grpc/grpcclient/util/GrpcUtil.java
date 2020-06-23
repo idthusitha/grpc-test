@@ -3,6 +3,7 @@ package com.grpc.grpcclient.util;
 
 import com.grpc.grpcclient.config.AppConfig;
 import com.grpc.grpcclient.grpc.HelloServiceImpl;
+import com.grpc.grpcclient.grpc.PingPongServiceImpl;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -25,7 +26,7 @@ public class GrpcUtil {
 
         Server server = ServerBuilder.forPort(appConfig.getGrpcPort())
                                      .addService(context.getBean(HelloServiceImpl.class))                                     
-                                     //.addService(context.getBean(DirectCreditCardPaymentServiceRpcImpl.class))
+                                     .addService(context.getBean(PingPongServiceImpl.class))
                                      .build()
                                      .start();
 

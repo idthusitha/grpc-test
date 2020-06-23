@@ -1,13 +1,23 @@
 # grpc-test
+gRPC is a modern open source high performance RPC framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication. It is also applicable in last mile of distributed computing to connect devices, mobile applications and browsers to backend services.
+
+More Info: https://grpc.io/
 
 
-### Build project
+### Build and Run application without tomcat 
 
+	git clone https://github.com/idthusitha/grpc-test.git
 	cd {{WORKSPACE}}/grpc-test/grpc-client
 	gradle clean build bootRun
 
 
+### GRPC client install
+	https://awesomeopensource.com/project/uw-labs/bloomrpc
+	https://github.com/uw-labs/bloomrpc/releases/download/1.4.1/bloomrpc_1.4.1_amd64.deb
+
+
 ### GRPC Call using BloomRPC
+Select the proto file
 
 	{
 		"firstName": "Hello",
