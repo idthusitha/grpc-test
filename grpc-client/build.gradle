@@ -1,0 +1,37 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.2.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'com.grpc'
+//version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	
+	compile fileTree(dir:'lib',include:['*.jar'])
+	//compile files('/system/workspace/grpc-test/grpc-server/build/libs/grpc-test-0.0.73.jar')
+	
+	compile ("io.grpc:grpc-netty:1.16.1")
+	
+	implementation "io.grpc:grpc-netty-shaded:1.16.1"
+	implementation "io.grpc:grpc-protobuf:1.16.1"
+	implementation "io.grpc:grpc-stub:1.16.1"
+	implementation "io.grpc:grpc-services:1.16.1"
+	
+}
+
+test {
+	useJUnitPlatform()
+}
