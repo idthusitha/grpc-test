@@ -3,9 +3,6 @@ package com.grpc.grpcclient.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-//import org.springframework.retry.annotation.EnableRetry;
-
-import java.util.List;
 
 /**
  * @author thusitha
@@ -13,7 +10,6 @@ import java.util.List;
  */
 @Configuration
 @PropertySource(value = { "classpath:application.properties" })
-// @EnableRetry
 public class AppConfig {
 
 	@Value("${grpc.server.port}")
