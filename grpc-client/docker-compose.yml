@@ -1,0 +1,10 @@
+version: '3'
+
+services:    
+  grpc_client:
+    image: grpctest/grpc-client
+    ports:
+      - "8080:8080"
+    environment:
+      - "GRPC_HOST=127.0.0.1"      
+    network_mode: host

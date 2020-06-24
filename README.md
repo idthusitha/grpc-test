@@ -13,6 +13,13 @@ More Info: https://grpc.io/
 	gradle clean build bootRun --debug-jvm
 	Listening for transport dt_socket at address: 5005
 	
+	sudo su
+	gradle clean build buildDocker
+	sudo docker-compose up
+	sudo docker-compose rm
+	
+	
+	sudo docker-compose -f docker-compose-debug.yml up
 
 
 ### GRPC client install
