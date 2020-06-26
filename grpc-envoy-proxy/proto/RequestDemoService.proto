@@ -6,6 +6,7 @@ option java_multiple_files = true;
 option java_package = "com.grpcserver.grpc";
 
 import "google/api/annotations.proto";
+import "google/api/httpbody.proto";
 
 message DemoRequest {
     string reqParam1 = 1;
@@ -24,4 +25,11 @@ service RequestDemoService {
             body: "*"
         };
     };    
+    
+    rpc getRequestBodyDetails(google.api.HttpBody) returns (DemoResponse){
+        option (google.api.http) = {
+			post: "/grpcserver.RequestDemo/bodyDetails"
+			body: "*"
+		};
+    };
 }

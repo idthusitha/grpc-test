@@ -20,6 +20,7 @@ More Info: https://grpc.io/
 	
 	
 	sudo docker-compose -f docker-compose-debug.yml up
+	Debug port is 5005
 
 
 ### GRPC client install
