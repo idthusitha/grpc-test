@@ -17,7 +17,7 @@ public class DemoController {
         return "Test2";
     }
 	
-	@RequestMapping(value = "/payredirectparam", method = RequestMethod.POST)
+	@RequestMapping(value = "/payredirectparam", method = RequestMethod.POST,produces = "application/json")
 	public String payredirectparam(HttpServletRequest request) {
 		JSONObject json = new JSONObject();
 		try {
