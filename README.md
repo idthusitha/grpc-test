@@ -3,10 +3,31 @@ gRPC is a modern open source high performance RPC framework that can run in any 
 
 More Info: https://grpc.io/
 
-
-### Build and Run application without tomcat 
-
+### Clone repository from github
 	git clone https://github.com/idthusitha/grpc-test.git
+
+### Build grpc-server jar	
+	cd {{WORKSPACE}}/grpc-test/grpc-server
+	gradle clean build
+	cp {{WORKSPACE}}/grpc-test/grpc-server/build/libs/grpc-server-1.0.0.jar  {{WORKSPACE}}/grpc-test/grpc-client/lib
+
+
+### Build grpc-envoy-proxy Service
+	cd {{WORKSPACE}}/grpc-test/grpc-envoy-proxy
+	gradle clean build
+	sudo docker image rm --force grpctest/grpc-envoy-proxy
+	sudo docker build -t  grpctest/grpc-envoy-proxy .
+	sudo docker-compose up	
+	
+	
+	POST Request
+	http://localhost:51051/grpcserver.RequestDemo/details?reqParam1=aaaaaaaaaaaa&reqParam2= qqqqqqqqqqqqqq
+	
+More Info:- https://blog.jdriven.com/2018/11/transcoding-grpc-to-http-json-using-envoy/
+
+
+### Build and Run application sprint boot, bootRun
+	
 	cd {{WORKSPACE}}/grpc-test/grpc-client
 	gradle clean build bootRun
 	
@@ -16,8 +37,7 @@ More Info: https://grpc.io/
 	sudo su
 	gradle clean build buildDocker
 	sudo docker-compose up
-	sudo docker-compose rm
-	
+	sudo docker-compose rm	
 	
 	sudo docker-compose -f docker-compose-debug.yml up
 	Debug port is 5005
@@ -37,20 +57,6 @@ Select the proto file
 	}
 	
 	http://localhost:9090
-
-
-### GRPC envoy Proxy service
-	cd {{WORKSPACE}}/grpc-test/grpc-envoy-proxy
-	gradle clean build
-	sudo docker image rm --force grpctest/grpc-envoy-proxy
-	sudo docker build -t  grpctest/grpc-envoy-proxy .
-	sudo docker-compose up	
-	
-	
-	http://localhost:51051/grpcserver.RequestDemo/details?reqParam1=aaaaaaaaaaaa&reqParam2= qqqqqqqqqqqqqq
-	
-	https://blog.jdriven.com/2018/11/transcoding-grpc-to-http-json-using-envoy/
-
 
 
 ### REST request
