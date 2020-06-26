@@ -13,8 +13,10 @@ More Info: https://grpc.io/
 
 
 ### Build grpc-envoy-proxy Service
+	cp {{WORKSPACE}}/grpc-test/grpc-server/src/main/proto/*.proto {{WORKSPACE}}/grpc-test/grpc-envoy-proxy/proto
 	cd {{WORKSPACE}}/grpc-test/grpc-envoy-proxy
 	gradle clean build
+	
 	sudo docker image rm --force grpctest/grpc-envoy-proxy
 	sudo docker build -t  grpctest/grpc-envoy-proxy .
 	sudo docker-compose up	
