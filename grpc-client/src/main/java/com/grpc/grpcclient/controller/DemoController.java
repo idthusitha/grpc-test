@@ -31,6 +31,7 @@ public class DemoController {
 		} catch (Exception e) {
 			System.out.println("Error in payredirectparam-->"+e);
 		}	
+		System.out.println(json.toString());
 		
 		return json.toString();
 	}
