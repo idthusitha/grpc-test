@@ -89,7 +89,7 @@ public class CommonUtils {
 
 		// Get file from resources folder
 		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
+		File file = new File(fileName);
 
 		try (Scanner scanner = new Scanner(file)) {
 

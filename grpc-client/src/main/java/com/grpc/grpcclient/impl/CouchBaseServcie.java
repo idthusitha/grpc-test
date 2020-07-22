@@ -40,7 +40,10 @@ public class CouchBaseServcie {
 					JSONObject json = new JSONObject (mockJson);
 					referenceId =json.getJSONObject("paymentOption").getString("paymentOptionId");
 				}
-				aeroPayCouchbaseConnector.insert(referenceId, mockJson);
+				if(!"".equals(referenceId)) {
+					System.out.println("referenceId==>"+referenceId);
+					aeroPayCouchbaseConnector.insert(referenceId, mockJson);
+				}
 			}
 			System.out.println("-----------------DATA LOADING DONE----------------------");
 		} catch (Exception e) {
