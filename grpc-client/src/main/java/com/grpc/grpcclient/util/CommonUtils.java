@@ -135,10 +135,10 @@ public class CommonUtils {
 
 			for (int i = 0; i < listOfFiles.length; i++) {
 				if (listOfFiles[i].isFile()) {
-					System.out.println("File " + listOfFiles[i].getName());
+					//System.out.println("File " + listOfFiles[i].getName());
 					map.put(listOfFiles[i].getName(), getFile(listOfFiles[i].getAbsolutePath()));
 				} else if (listOfFiles[i].isDirectory()) {
-					System.out.println("Directory " + listOfFiles[i].getName());
+					//System.out.println("Directory " + listOfFiles[i].getName());
 				}
 			}
 		} catch (Exception e) {
