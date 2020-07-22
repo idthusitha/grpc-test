@@ -33,7 +33,7 @@ public class CouchBaseServcie {
 					referenceId = "Payment";
 
 				} else if (file.startsWith("Dynamic")) {
-					referenceId = "Dynamic-f9ff-4804-b325-4c449c809c76";
+					referenceId = file;
 				
 				} else if (file.startsWith("paymentGate")) {
 					
