@@ -34,15 +34,19 @@ public class CouchBaseServcie {
 
 				} else if (file.startsWith("Dynamic")) {
 					referenceId = file.replace(".json", "");
-				
+
 				} else if (file.startsWith("paymentGate")) {
-					
-					JSONObject json = new JSONObject (mockJson);
-					referenceId =json.getJSONObject("paymentOption").getString("paymentOptionId");
+
+					JSONObject json = new JSONObject(mockJson);
+					referenceId = json.getJSONObject("paymentOption").getString("paymentOptionId");
 				}
-				if(!"".equals(referenceId)) {
-					System.out.println("referenceId==>"+referenceId);
-					aeroPayCouchbaseConnector.insert(referenceId, mockJson);
+				if (!"".equals(referenceId)) {
+					try {
+						System.out.println("referenceId==>" + referenceId);
+						aeroPayCouchbaseConnector.insert(referenceId, mockJson);
+					} catch (Exception e) {
+						System.out.println("Error in referenceId==>" + referenceId+ "ERROR:"+e.getMessage() );
+					}
 				}
 			}
 			System.out.println("-----------------DATA LOADING DONE----------------------");
