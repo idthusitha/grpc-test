@@ -49,12 +49,15 @@ public class SoapTestController {
 		String action = "0";
 		String nbrTotalArticles = "1";
 		String montantTotalArticles = "12500";
-		String MAC = getMACValue(creancierId, dateServeurCreancier, action, nbrTotalArticles, montantTotalArticles);
+		String idArticle = "abcd";
+		String MAC = getMACValue(creancierId, dateServeurCreancier, action, nbrTotalArticles, montantTotalArticles,
+				idArticle);
 
 		// SOAP Body
 		SOAPBody soapBody = envelope.getBody();
-		SOAPElement soapBodyElem = soapBody.addChildElement("genRefFatourati", myNamespace, "http://skeleton.services.fawatir.fatouratibo.mtc.com");
-		SOAPElement soapin = soapBodyElem.addChildElement("in0", myNamespace,myNameSpaceURITemp);
+		SOAPElement soapBodyElem = soapBody.addChildElement("genRefFatourati", myNamespace,
+				"http://skeleton.services.fawatir.fatouratibo.mtc.com");
+		SOAPElement soapin = soapBodyElem.addChildElement("in0", myNamespace, myNameSpaceURITemp);
 
 		soapin.addChildElement("creancierId", myNamespace).addTextNode(creancierId);
 		soapin.addChildElement("dateServeurCreancier", myNamespace).addTextNode(dateServeurCreancier);
@@ -66,7 +69,7 @@ public class SoapTestController {
 		SOAPElement panierClient = soapin.addChildElement("panierClient", myNamespace);
 		SOAPElement PanierClient_Type = panierClient.addChildElement("PanierClient_Type", myNamespace);
 
-		PanierClient_Type.addChildElement("idArticle", myNamespace).addTextNode("abcd");
+		PanierClient_Type.addChildElement("idArticle", myNamespace).addTextNode(idArticle);
 		PanierClient_Type.addChildElement("creanceId", myNamespace).addTextNode(creancierId);
 		PanierClient_Type.addChildElement("description", myNamespace).addTextNode("TEST");
 		PanierClient_Type.addChildElement("montant", myNamespace).addTextNode(montantTotalArticles);
@@ -76,15 +79,18 @@ public class SoapTestController {
 	}
 
 	private static String getMACValue(String creancierId, String dateServeurCreancier, String action,
-			String nbrTotalArticles, String montantTotalArticles) {
+			String nbrTotalArticles, String montantTotalArticles, String idArticle) {
 		String response = "";
 		// creancierId + dateServeurCreancier + action + nbrTotalArticles
 		// + montantTotalArticles +
-		// la concatenation des IdArticle de la liste des panierClient + Secret Key
+		// la concatenation des IdArticle de la liste des panierClient
+		// the concatenation of ItemIDs from the Customer cart list
+		// + Secret Key
 		// => hash MD5
 		try {
+			String Secret_Key = "123456";
 			String str = creancierId + "+" + dateServeurCreancier + "+" + action + "+" + nbrTotalArticles + "+"
-					+ montantTotalArticles + "+001"+"+"+"Secret_Key";
+					+ montantTotalArticles + idArticle + "+" + Secret_Key;
 			// Encode data on your side using BASE64
 			byte[] bytesEncoded = Base64.encodeBase64(str.getBytes());
 			System.out.println("encoded value is " + new String(bytesEncoded));
@@ -118,7 +124,7 @@ public class SoapTestController {
 			// Print the SOAP Response
 			System.out.println("Response SOAP Message:");
 			soapResponse.writeTo(System.out);
-			
+
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			soapResponse.writeTo(out);
 			response = new String(out.toByteArray());
