@@ -59,22 +59,22 @@ public class SoapTestController {
 				"http://skeleton.services.fawatir.fatouratibo.mtc.com");
 		SOAPElement soapin = soapBodyElem.addChildElement("in0", myNamespace, myNameSpaceURITemp);
 
-		soapin.addChildElement("creancierId", myNamespace).addTextNode(creancierId);
-		soapin.addChildElement("dateServeurCreancier", myNamespace).addTextNode(dateServeurCreancier);
-		soapin.addChildElement("action", myNamespace).addTextNode(action);
-		soapin.addChildElement("nbrTotalArticles", myNamespace).addTextNode(nbrTotalArticles);
-		soapin.addChildElement("montantTotalArticles", myNamespace).addTextNode(montantTotalArticles);
-		soapin.addChildElement("MAC", myNamespace).addTextNode(MAC);
+		soapin.addChildElement("creancierId", myNamespace, "").addTextNode(creancierId);
+		soapin.addChildElement("dateServeurCreancier", myNamespace, "").addTextNode(dateServeurCreancier);
+		soapin.addChildElement("action", myNamespace, "").addTextNode(action);
+		soapin.addChildElement("nbrTotalArticles", myNamespace, "").addTextNode(nbrTotalArticles);
+		soapin.addChildElement("montantTotalArticles", myNamespace, "").addTextNode(montantTotalArticles);
+		soapin.addChildElement("MAC", myNamespace, "").addTextNode(MAC);
 
-		SOAPElement panierClient = soapin.addChildElement("panierClient", myNamespace);
-		SOAPElement PanierClient_Type = panierClient.addChildElement("PanierClient_Type", myNamespace);
+		SOAPElement panierClient = soapin.addChildElement("panierClient", myNamespace, "");
+		SOAPElement PanierClient_Type = panierClient.addChildElement("PanierClient_Type", myNamespace, "");
 
-		PanierClient_Type.addChildElement("idArticle", myNamespace).addTextNode(idArticle);
-		PanierClient_Type.addChildElement("creanceId", myNamespace).addTextNode(creancierId);
-		PanierClient_Type.addChildElement("description", myNamespace).addTextNode("TEST");
-		PanierClient_Type.addChildElement("montant", myNamespace).addTextNode(montantTotalArticles);
-		PanierClient_Type.addChildElement("Etat", myNamespace).addTextNode("0");
-		PanierClient_Type.addChildElement("codeRetour", myNamespace).addTextNode("000");
+		PanierClient_Type.addChildElement("idArticle", myNamespace, "").addTextNode(idArticle);
+		PanierClient_Type.addChildElement("creanceId", myNamespace, "").addTextNode(creancierId);
+		PanierClient_Type.addChildElement("description", myNamespace, "").addTextNode("TEST");
+		PanierClient_Type.addChildElement("montant", myNamespace, "").addTextNode(montantTotalArticles);
+		PanierClient_Type.addChildElement("Etat", myNamespace, "").addTextNode("0");
+		PanierClient_Type.addChildElement("codeRetour", myNamespace, "").addTextNode("000");
 
 	}
 
