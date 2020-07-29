@@ -3,28 +3,33 @@ package com.grpc.grpcclient.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.xml.soap.*;
+
+import org.apache.commons.codec.binary.Base64;
 
 @RestController
 @RequestMapping("/soapmessge")
 public class SoapTestController {
 
-	@RequestMapping(value = "/call")
+	@RequestMapping(value = "/call", produces = "application/xml")
 	public String payredirect() {
 
-		String soapEndpointUrl = "https://www.fatourati.ma/cmifat/services/RefFatouratiWS.asmx";
+		String soapEndpointUrl = "https://www.fatourati.ma/cmifat/services/RefFatouratiWS";
 		String soapAction = "https://www.fatourati.ma/cmifat/services/RefFatouratiWS";
 
-		callSoapWebService(soapEndpointUrl, soapAction);
-
-		return "Test2";
+		return callSoapWebService(soapEndpointUrl, soapAction);
 	}
 
 	private static void createSoapEnvelope(SOAPMessage soapMessage) throws SOAPException {
 		SOAPPart soapPart = soapMessage.getSOAPPart();
 
-		String myNamespace = "myNamespace";
-		String myNamespaceURI = "https://www.w3schools.com/xml/";
+		String myNamespace = "";
+		String myNamespaceURI = "http://schemas.xmlsoap.org/soap/encoding/";
+		String myNameSpaceURITemp = "";
 
 		// SOAP Envelope
 		SOAPEnvelope envelope = soapPart.getEnvelope();
@@ -39,18 +44,65 @@ public class SoapTestController {
 		 * </myNamespace:CelsiusToFahrenheit> </SOAP-ENV:Body> </SOAP-ENV:Envelope>
 		 */
 
+		String creancierId = "1234";
+		String dateServeurCreancier = getCurrentDateStr();
+		String action = "0";
+		String nbrTotalArticles = "1";
+		String montantTotalArticles = "12500";
+		String MAC = getMACValue(creancierId, dateServeurCreancier, action, nbrTotalArticles, montantTotalArticles);
+
 		// SOAP Body
 		SOAPBody soapBody = envelope.getBody();
-		SOAPElement soapBodyElem = soapBody.addChildElement("genRefFatourati", myNamespace);
-		SOAPElement soapin = soapBodyElem.addChildElement("in", myNamespace);
-		
-		soapin.addChildElement("creancierId", myNamespace).addTextNode("1234");
-		soapin.addChildElement("dateServeurCreancier", myNamespace).addTextNode("20200729171010");
-		soapin.addChildElement("action", myNamespace).addTextNode("0");
-		soapin.addChildElement("nbrTotalArticles", myNamespace).addTextNode("1");
-		soapin.addChildElement("montantTotalArticles", myNamespace).addTextNode("12500");
-		soapin.addChildElement("MAC", myNamespace).addTextNode("1bcb16879de413de5d93d13ba5047d03");		
-		
+		SOAPElement soapBodyElem = soapBody.addChildElement("genRefFatourati", myNamespace, "http://skeleton.services.fawatir.fatouratibo.mtc.com");
+		SOAPElement soapin = soapBodyElem.addChildElement("in0", myNamespace,myNameSpaceURITemp);
+
+		soapin.addChildElement("creancierId", myNamespace).addTextNode(creancierId);
+		soapin.addChildElement("dateServeurCreancier", myNamespace).addTextNode(dateServeurCreancier);
+		soapin.addChildElement("action", myNamespace).addTextNode(action);
+		soapin.addChildElement("nbrTotalArticles", myNamespace).addTextNode(nbrTotalArticles);
+		soapin.addChildElement("montantTotalArticles", myNamespace).addTextNode(montantTotalArticles);
+		soapin.addChildElement("MAC", myNamespace).addTextNode(MAC);
+
+		SOAPElement panierClient = soapin.addChildElement("panierClient", myNamespace);
+		SOAPElement PanierClient_Type = panierClient.addChildElement("PanierClient_Type", myNamespace);
+
+		PanierClient_Type.addChildElement("idArticle", myNamespace).addTextNode("abcd");
+		PanierClient_Type.addChildElement("creanceId", myNamespace).addTextNode(creancierId);
+		PanierClient_Type.addChildElement("description", myNamespace).addTextNode("TEST");
+		PanierClient_Type.addChildElement("montant", myNamespace).addTextNode(montantTotalArticles);
+		PanierClient_Type.addChildElement("Etat", myNamespace).addTextNode("0");
+		PanierClient_Type.addChildElement("codeRetour", myNamespace).addTextNode("000");
+
+	}
+
+	private static String getMACValue(String creancierId, String dateServeurCreancier, String action,
+			String nbrTotalArticles, String montantTotalArticles) {
+		String response = "";
+		// creancierId + dateServeurCreancier + action + nbrTotalArticles
+		// + montantTotalArticles +
+		// la concatenation des IdArticle de la liste des panierClient + Secret Key
+		// => hash MD5
+		try {
+			String str = creancierId + "+" + dateServeurCreancier + "+" + action + "+" + nbrTotalArticles + "+"
+					+ montantTotalArticles + "+001"+"+"+"Secret_Key";
+			// Encode data on your side using BASE64
+			byte[] bytesEncoded = Base64.encodeBase64(str.getBytes());
+			System.out.println("encoded value is " + new String(bytesEncoded));
+			response = new String(bytesEncoded);
+
+			// Decode data on other side, by processing encoded data
+			byte[] valueDecoded = Base64.decodeBase64(bytesEncoded);
+			System.out.println("Decoded value is " + new String(valueDecoded));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return response;
+	}
+
+	private static String getCurrentDateStr() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYYMMDDhhmmSS");
+		return simpleDateFormat.format(new Date());
 	}
 
 	private static String callSoapWebService(String soapEndpointUrl, String soapAction) {
@@ -66,7 +118,10 @@ public class SoapTestController {
 			// Print the SOAP Response
 			System.out.println("Response SOAP Message:");
 			soapResponse.writeTo(System.out);
-			response = soapResponse.toString();
+			
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			soapResponse.writeTo(out);
+			response = new String(out.toByteArray());
 			System.out.println();
 
 			soapConnection.close();
