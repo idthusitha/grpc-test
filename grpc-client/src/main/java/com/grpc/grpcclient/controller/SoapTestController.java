@@ -18,8 +18,13 @@ public class SoapTestController {
 	@RequestMapping(value = "/call", produces = "application/xml")
 	public String payredirect() {
 
-		String soapEndpointUrl = "https://www.fatourati.ma/cmifat/services/RefFatouratiWS";
-		String soapAction = "https://www.fatourati.ma/cmifat/services/RefFatouratiWS";
+//		String soapEndpointUrl = "https://www.fatourati.ma/cmifat/services/RefFatouratiWS";
+//		String soapAction = "https://www.fatourati.ma/cmifat/services/RefFatouratiWS";
+//		
+		String soapEndpointUrl = "http://194.204.248.119/cmifat/services/RefFatouratiWS";
+		String soapAction = "http://194.204.248.119/cmifat/services/RefFatouratiWS";
+		
+		
 
 		return callSoapWebService(soapEndpointUrl, soapAction);
 	}
@@ -34,6 +39,8 @@ public class SoapTestController {
 		// SOAP Envelope
 		SOAPEnvelope envelope = soapPart.getEnvelope();
 		envelope.addNamespaceDeclaration(myNamespace, myNamespaceURI);
+		//envelope.addNamespaceDeclaration("xmlns:sk", "http://skeleton.services.fawatir.fatouratibo.mtc.com");
+		//envelope.addAttribute("xmlns:sk", "http://skeleton.services.fawatir.fatouratibo.mtc.com");
 
 		/*
 		 * Constructed SOAP Request Message: <SOAP-ENV:Envelope
@@ -44,7 +51,8 @@ public class SoapTestController {
 		 * </myNamespace:CelsiusToFahrenheit> </SOAP-ENV:Body> </SOAP-ENV:Envelope>
 		 */
 
-		String creancierId = "1234";
+		String creancierId = "1023";
+		String creanceId = "01";
 		String dateServeurCreancier = getCurrentDateStr();
 		String action = "0";
 		String nbrTotalArticles = "1";
@@ -52,29 +60,40 @@ public class SoapTestController {
 		String idArticle = "abcd";
 		String MAC = getMACValue(creancierId, dateServeurCreancier, action, nbrTotalArticles, montantTotalArticles,
 				idArticle);
+		String description = "Enregistrement,Immatriculation";
+		String refClient = "210259_1514477225815";
 
 		// SOAP Body
 		SOAPBody soapBody = envelope.getBody();
-		SOAPElement soapBodyElem = soapBody.addChildElement("genRefFatourati", myNamespace,
+		SOAPElement soapBodyElem = soapBody.addChildElement("genRefFatourati", "sk",
 				"http://skeleton.services.fawatir.fatouratibo.mtc.com");
 		SOAPElement soapin = soapBodyElem.addChildElement("in0", myNamespace, myNameSpaceURITemp);
 
+		soapin.addChildElement("MAC", myNamespace, "").addTextNode(MAC);
+		soapin.addChildElement("action", myNamespace, "").addTextNode(action);
 		soapin.addChildElement("creancierId", myNamespace, "").addTextNode(creancierId);
 		soapin.addChildElement("dateServeurCreancier", myNamespace, "").addTextNode(dateServeurCreancier);
-		soapin.addChildElement("action", myNamespace, "").addTextNode(action);
-		soapin.addChildElement("nbrTotalArticles", myNamespace, "").addTextNode(nbrTotalArticles);
+		
+		soapin.addChildElement("globalParams", myNamespace, "").addTextNode("");
+		soapin.addChildElement("ident2ClientSysPmt", myNamespace, "").addTextNode("");
+		soapin.addChildElement("identClientSysPmt", myNamespace, "").addTextNode("");
+		
 		soapin.addChildElement("montantTotalArticles", myNamespace, "").addTextNode(montantTotalArticles);
-		soapin.addChildElement("MAC", myNamespace, "").addTextNode(MAC);
+		soapin.addChildElement("nbrTotalArticles", myNamespace, "").addTextNode(nbrTotalArticles);
 
 		SOAPElement panierClient = soapin.addChildElement("panierClient", myNamespace, "");
 		SOAPElement PanierClient_Type = panierClient.addChildElement("PanierClient_Type", myNamespace, "");
 
 		PanierClient_Type.addChildElement("idArticle", myNamespace, "").addTextNode(idArticle);
-		PanierClient_Type.addChildElement("creanceId", myNamespace, "").addTextNode(creancierId);
-		PanierClient_Type.addChildElement("description", myNamespace, "").addTextNode("TEST");
+		PanierClient_Type.addChildElement("creanceId", myNamespace, "").addTextNode(creanceId);
+		PanierClient_Type.addChildElement("refClient", myNamespace, "").addTextNode(refClient);
+		PanierClient_Type.addChildElement("description", myNamespace, "").addTextNode(description);
 		PanierClient_Type.addChildElement("montant", myNamespace, "").addTextNode(montantTotalArticles);
 		PanierClient_Type.addChildElement("Etat", myNamespace, "").addTextNode("0");
 		PanierClient_Type.addChildElement("codeRetour", myNamespace, "").addTextNode("000");
+		
+		soapin.addChildElement("refFatourati", myNamespace, "").addTextNode("");
+		soapin.addChildElement("sysPmtCible", myNamespace, "").addTextNode("");
 
 	}
 
@@ -87,10 +106,12 @@ public class SoapTestController {
 		// the concatenation of ItemIDs from the Customer cart list
 		// + Secret Key
 		// => hash MD5
+		
 		try {
-			String Secret_Key = "123456";
-			String str = creancierId + "+" + dateServeurCreancier + "+" + action + "+" + nbrTotalArticles + "+"
-					+ montantTotalArticles + idArticle + "+" + Secret_Key;
+			String plusOperator = "";
+			String Secret_Key = "D97C7F423D7A89F7592C708FEFA03901";
+			String str = creancierId + plusOperator + dateServeurCreancier + plusOperator + action + plusOperator + nbrTotalArticles + plusOperator
+					+ montantTotalArticles + idArticle + plusOperator + Secret_Key;
 			// Encode data on your side using BASE64
 			byte[] bytesEncoded = Base64.encodeBase64(str.getBytes());
 			System.out.println("encoded value is " + new String(bytesEncoded));

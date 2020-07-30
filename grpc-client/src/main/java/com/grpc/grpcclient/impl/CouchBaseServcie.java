@@ -45,7 +45,7 @@ public class CouchBaseServcie {
 						System.out.println("referenceId==>" + referenceId);
 						aeroPayCouchbaseConnector.insert(referenceId, mockJson);
 					} catch (Exception e) {
-						System.out.println("Error in referenceId==>" + referenceId+ " ERROR:"+e.getMessage() );
+						System.out.println("Error in referenceId==>" + referenceId+ " : "+file+" ERROR:"+e.getMessage() );
 					}
 				}
 			}
